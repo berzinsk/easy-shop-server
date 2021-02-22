@@ -34,23 +34,19 @@ app.get(`${api}/products`, async (req, res) => {
   }
 })
 
-app.post(`${api}/product`, (req, res) => {
-  const product = new Product({
-    name: req.body.name,
-    image: req.body.image,
-    countInStock: req.body.countInStock
-  })
+app.post(`${api}/product`, async (req, res) => {
+  try {
+    const product = new Product({
+      name: req.body.name,
+      image: req.body.image,
+      countInStock: req.body.countInStock
+    })
 
-  product.save()
-    .then(createdProduct => {
-      res.status(201).json(createdProduct)
-    })
-    .catch(err => {
-      res.status(500).json({
-        error: err,
-        success: false
-      })
-    })
+    const createdProduct = await product.save()
+    res.status(201).json(createdProduct)
+  } catch (error) {
+    res.status(500).json({ error, success: false })
+  }
 })
 
 mongoose.connect(process.env.CONNECTION_STRING, {
