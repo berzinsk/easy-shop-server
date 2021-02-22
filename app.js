@@ -5,6 +5,8 @@ const app = express()
 const morgan = require('morgan')
 const mongoose = require('mongoose')
 
+const Product = require('./models/product')
+
 // middleware
 app.use(express.json())
 app.use(morgan('tiny'))
@@ -12,17 +14,6 @@ app.use(morgan('tiny'))
 const port = 3000
 
 const api = process.env.API_URL
-
-const productSchema = mongoose.Schema({
-  name: String,
-  image: String,
-  countInStock: {
-    type: Number,
-    required: true
-  }
-})
-
-const Product = mongoose.model('Product', productSchema)
 
 app.get(`${api}/products`, async (req, res) => {
   try {
