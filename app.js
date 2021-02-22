@@ -5,8 +5,6 @@ const app = express()
 const morgan = require('morgan')
 const mongoose = require('mongoose')
 
-const Product = require('./models/product')
-
 const productRouter = require('./routers/products')
 
 // middleware
