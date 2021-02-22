@@ -7,37 +7,17 @@ const mongoose = require('mongoose')
 
 const Product = require('./models/product')
 
+const productRouter = require('./routers/products')
+
 // middleware
 app.use(express.json())
 app.use(morgan('tiny'))
 
 const port = 3000
-
 const api = process.env.API_URL
 
-app.get(`${api}/products`, async (req, res) => {
-  try {
-    const productList = await Product.find()
-    res.send(productList)
-  } catch (error) {
-    res.status(500).json({ error, success: false })
-  }
-})
-
-app.post(`${api}/product`, async (req, res) => {
-  try {
-    const product = new Product({
-      name: req.body.name,
-      image: req.body.image,
-      countInStock: req.body.countInStock
-    })
-
-    const createdProduct = await product.save()
-    res.status(201).json(createdProduct)
-  } catch (error) {
-    res.status(500).json({ error, success: false })
-  }
-})
+// Routers
+app.use(`${api}/products`, productRouter)
 
 mongoose.connect(process.env.CONNECTION_STRING, {
   useNewUrlParser: true,
