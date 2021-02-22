@@ -13,10 +13,10 @@ const port = 3000
 const api = process.env.API_URL
 
 //Routes
-const categoriesRoutes = require('./routers/categories');
-const productsRoutes = require('./routers/products');
-const usersRoutes = require('./routers/users');
-const ordersRoutes = require('./routers/orders');
+const categoriesRoutes = require('./routes/categories');
+const productsRoutes = require('./routes/products');
+const usersRoutes = require('./routes/users');
+const ordersRoutes = require('./routes/orders');
 
 app.use(`${api}/categories`, categoriesRoutes);
 app.use(`${api}/products`, productsRoutes);
