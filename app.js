@@ -17,7 +17,10 @@ const api = process.env.API_URL
 const productSchema = mongoose.Schema({
   name: String,
   image: String,
-  countInStock: Number
+  countInStock: {
+    type: Number,
+    required: true
+  }
 })
 
 const Product = mongoose.model('Product', productSchema)
@@ -42,10 +45,10 @@ app.post(`${api}/product`, (req, res) => {
   })
 
   product.save()
-    .then((createdProduct) => {
+    .then(createdProduct => {
       res.status(201).json(createdProduct)
     })
-    .catch((err) => {
+    .catch(err => {
       res.status(500).json({
         error: err,
         success: false
