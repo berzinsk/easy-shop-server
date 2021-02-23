@@ -45,7 +45,7 @@ router.put('/:id', async (req, res) => {
   try {
     const category = await Category.findByIdAndUpdate(req.params.id, {
       name: req.body.name,
-      icon: req.body.icon,
+      icon: req.body.icon || category.icon,
       color: req.body.icon,
     }, { new: true })
 
