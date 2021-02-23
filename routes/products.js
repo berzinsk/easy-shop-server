@@ -6,7 +6,7 @@ const { Category } = require('../models/category')
 
 router.get('/', async (req, res) => {
   try {
-    const productList = await Product.find()
+    const productList = await Product.find().populate('category')
     res.send(productList)
   } catch (error) {
     res.status(500).json({ success: false, error })
