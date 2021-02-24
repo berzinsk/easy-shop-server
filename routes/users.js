@@ -127,4 +127,18 @@ router.get('/get/count', async (req, res) => {
   }
 })
 
+router.delete('/:id', async (req, res) => {
+  try {
+    const user = await User.findByIdAndRemove(req.params.id)
+
+    if (user) {
+      res.status(200).json({ success: true, message: 'The user was deleted.' })
+    } else {
+      res.status(404).json({ success: false, message: 'User not found' })
+    }
+  } catch (error) {
+    res.status(400).json({ success: false, error })
+  }
+})
+
 module.exports =router
