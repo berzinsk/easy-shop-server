@@ -29,7 +29,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: '',
   },
-  zip :{
+  zip: {
     type: String,
     default: '',
   },
