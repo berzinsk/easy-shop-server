@@ -5,13 +5,27 @@ const bcrypt = require('bcryptjs')
 const router = express.Router()
 
 router.get('/', async (req, res) =>{
-  const userList = await User.find()
+  const userList = await User.find().select('-passwordHash')
 
   if(!userList) {
     res.status(500).json({success: false})
   }
 
   res.send(userList)
+})
+
+router.get('/:id', async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id).select('-passwordHash')
+
+    if (user) {
+      res.status(200).send(user)
+    } else {
+      res.status(404).json({ success: false, message: 'User not found' })
+    }
+  } catch (error) {
+    res.status(400).json({ success: false, error })
+  }
 })
 
 router.post('/', async (req, res) => {
