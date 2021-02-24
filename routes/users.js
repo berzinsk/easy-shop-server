@@ -113,4 +113,18 @@ router.post('/register', async (req, res) => {
   }
 })
 
+router.get('/get/count', async (req, res) => {
+  try {
+    const userCount = await User.countDocuments(count => count)
+
+    if (userCount) {
+      res.send({ userCount })
+    } else {
+      res.status(404).json({ success: false, message: 'No users found' })
+    }
+  } catch (error) {
+    res.status(400).json({ success: false, error })
+  }
+})
+
 module.exports =router
