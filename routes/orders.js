@@ -136,4 +136,18 @@ router.get('/get/totalsales', async (req, res) => {
   }
 })
 
+router.get('/get/count', async (req, res) => {
+  try {
+    const orderCount = await Order.countDocuments(count => count)
+
+    if (orderCount) {
+      res.send({ orderCount })
+    } else {
+      res.status(404).json({ success: false, message: 'Orders not found!' })
+    }
+  } catch (error) {
+    res.status(400).json({ success: false, error })
+  }
+})
+
 module.exports =router
