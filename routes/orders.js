@@ -4,17 +4,37 @@ const router = express.Router()
 const { Order } = require('../models/order')
 const { OrderItem } = require('../models/order-item')
 
-router.get(`/`, async (req, res) => {
+router.get('/', async (req, res) => {
   try {
     const orderList = await Order.find().populate('user', 'name').sort({ 'dateOrdered': -1 })
 
     if(!orderList) {
-      return res.status(500).json({ success: false, error: 'Unable to find order!' })
+      return res.status(500).json({ success: false, error: 'Unable to find orders!' })
     }
 
     res.send(orderList)
   } catch (error) {
-    res.send(error)
+    res.status(500).send(error)
+  }
+})
+
+router.get('/:id', async (req, res) => {
+  try {
+    const order = await Order.findById(req.params.id)
+      .populate('user', 'name')
+      .populate({
+          path: 'orderItems', populate: {
+            path: 'product', populate: 'category',
+          },
+        })
+
+    if(!order) {
+      return res.status(500).json({ success: false, error: 'Unable to find order!' })
+    }
+
+    res.send(order)
+  } catch (error) {
+    res.status(500).send(error)
   }
 })
 
@@ -53,7 +73,7 @@ router.post('/', async (req, res) => {
 
     res.send(order)
   } catch (error) {
-    res.send(error)
+    res.status(500).send(error)
   }
 })
 
