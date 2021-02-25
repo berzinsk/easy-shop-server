@@ -3,13 +3,17 @@ const express = require('express')
 const router = express.Router()
 
 router.get(`/`, async (req, res) => {
-  const orderList = await Order.find()
+  try {
+    const orderList = await Order.find()
 
-  if(!orderList) {
-    res.status(500).json({success: false})
+    if(!orderList) {
+      return res.status(500).json({ success: false, error: 'Unable to find order!' })
+    }
+
+    res.send(orderList)
+  } catch (error) {
+    res.send(error)
   }
-
-  res.send(orderList)
 })
 
 module.exports =router
