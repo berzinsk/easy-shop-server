@@ -150,4 +150,24 @@ router.get('/get/count', async (req, res) => {
   }
 })
 
+router.get('/get/userorders/:userId', async (req, res) => {
+  try {
+    const userOrderList = await Order.find({ user: req.params.userId })
+      .populate({
+        path: 'orderItems', populate: {
+          path: 'product', populate: 'category',
+        },
+      })
+      .sort({ 'dateOrdered': -1 })
+
+    if(!userOrderList) {
+      return res.status(500).json({ success: false, error: 'Unable to find orders!' })
+    }
+
+    res.send(userOrderList)
+  } catch (error) {
+    res.status(500).send(error)
+  }
+})
+
 module.exports =router
