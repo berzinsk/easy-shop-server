@@ -120,4 +120,20 @@ router.delete('/:id', async (req, res) => {
   }
 })
 
+router.get('/get/totalsales', async (req, res) => {
+  try {
+    const totalSales = await Order.aggregate([
+      { $group: { _id: null, totalsales: { $sum: '$totalPrice' }}}
+    ])
+
+    if (!totalSales) {
+      return res.status(400).json({ success: false, message: 'The order sales cannot be generated' })
+    }
+
+    res.send({ totalSales: totalSales.pop().totalsales })
+  } catch (error) {
+    res.status(400).send(error)
+  }
+})
+
 module.exports =router
