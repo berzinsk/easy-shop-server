@@ -6,7 +6,7 @@ const { OrderItem } = require('../models/order-item')
 
 router.get(`/`, async (req, res) => {
   try {
-    const orderList = await Order.find()
+    const orderList = await Order.find().populate('user', 'name').sort({ 'dateOrdered': -1 })
 
     if(!orderList) {
       return res.status(500).json({ success: false, error: 'Unable to find order!' })
