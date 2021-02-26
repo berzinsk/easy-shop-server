@@ -67,6 +67,11 @@ router.post(`/`, uploadOptions.single('image'), async (req, res) => {
       return res.status(400).json({ success: false, error: 'Category not found!' })
     }
 
+    const file = req.file
+    if (!file) {
+      return res.status(400).json({ success: false, error: 'No image in the request!' })
+    }
+
     const fileName = req.file.filename
     const basePath = `${req.protocol}://${req.get('host')}/public/upload/`
 
