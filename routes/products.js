@@ -73,7 +73,7 @@ router.post(`/`, uploadOptions.single('image'), async (req, res) => {
     }
 
     const fileName = req.file.filename
-    const basePath = `${req.protocol}://${req.get('host')}/public/upload/`
+    const basePath = `${req.protocol}://${req.get('host')}/public/uploads/`
 
     const product = new Product({
       name: req.body.name,
@@ -171,7 +171,7 @@ router.put('/gallery-images/:id', uploadOptions.array('images', 10), async (req,
   try {
     const files = req.files
     let imagesPathArray = []
-    const basePath = `${req.protocol}://${req.get('host')}/public/upload/`
+    const basePath = `${req.protocol}://${req.get('host')}/public/uploads/`
 
     if (files) {
       files.map(file => {
