@@ -167,4 +167,30 @@ router.get('/get/featured/:count', async (req, res) => {
   }
 })
 
+router.put('/gallery-images/:id', uploadOptions.array('images', 10), async (req, res) => {
+  try {
+    const files = req.files
+    let imagesPathArray = []
+    const basePath = `${req.protocol}://${req.get('host')}/public/upload/`
+
+    if (files) {
+      files.map(file => {
+        imagesPathArray.push(`${basePath}${file.filename}`)
+      })
+    }
+
+    const product = await Product.findByIdAndUpdate(req.params.id, {
+      images: imagesPathArray
+    }, { new: true })
+
+    if (product) {
+      res.status(200).send(product)
+    } else {
+      res.status(404).json({ success: false, message: 'Product can\'t be updated.' })
+    }
+  } catch (error) {
+    res.status(400).json({ success: false, error })
+  }
+})
+
 module.exports = router
