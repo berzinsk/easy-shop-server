@@ -36,11 +36,19 @@ mongoose.connect(process.env.CONNECTION_STRING, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   dbName: 'eshop-database'
-}).then(() => {
-    console.log('Database Connection is ready...')
-  })
-  .catch(err => console.log(err))
+})
+.then(() => {
+  console.log('Database Connection is ready...')
+})
+.catch(err => console.log(err))
 
-app.listen(port, () => {
-  console.log(`Server is running http://localhost:${port}`)
+// Development
+// app.listen(port, () => {
+//   console.log(`Server is running http://localhost:${port}`)
+// })
+
+// Production
+var server = app.listen(process.env.PORT || port, function() {
+  var port = server.address().port
+  console.log('Express is working on port ' + port)
 })
